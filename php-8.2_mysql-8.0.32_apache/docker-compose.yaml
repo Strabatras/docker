@@ -1,0 +1,29 @@
+version: '3'
+services:
+  apache-php:
+    build:
+      ./php
+    container_name: php-8.2_mysql-8.0.32_apache
+    volumes:
+      - ./log/apache:/var/log/apache2
+      - ./php/config/:/usr/local/etc/php/conf.d/
+      - ./src:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+  mysql:
+    image: mysql:8.0.32
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: project_db
+      MYSQL_USER: project_user
+      MYSQL_PASSWORD: project_password
+
+
+
+#docker-compose up -d
